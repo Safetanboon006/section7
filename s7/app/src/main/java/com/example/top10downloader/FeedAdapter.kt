@@ -26,7 +26,23 @@ class FeedAdapter(context: Context,private val resource:Int,private val applicat
         if (convertView==null){
          //   Log.d(TAG,"getView called with null convertView")
             view=inflater.inflate(resource,parent,false)
-
+            viewHolder=ViewHolder(view)
+            view.tag=viewHolder
+        }else{
+          //  Log.d(TAG,"getView provided a convertView")
+            view=convertView
+            viewHolder=view.tagas ViewHolder
         }
+        val currentApp=applications[position]
+        viewHolder.tvName.text=currentApp.name
+        viewHolder.tvArtist.text=currentApp.artist
+        viewHolder.tvSummary.text=currentApp.summary
+
+        return view
+    }
+
+    override fun getCount():Int{
+       // Log.d(TAG,"getCount called")
+        return applications
     }
 }
