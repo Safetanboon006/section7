@@ -8,40 +8,40 @@ class ParseApplications {
     private val TAG = "ParseApplications"
     val applications=ArrayList<FeedEntry>()
 
-    fun parse(xmlData:String):Boolean{
-        Log.d(TAG,"parse called with $xmlData")
-        var status=true
-        var inEntry=false
-        var textValue=""
+    fun parse(xmlData:String):Boolean {
+        Log.d(TAG, "parse called with $xmlData")
+        var status = true
+        var inEntry = false
+        var textValue = ""
 
-        try{
+        try {
             val factory = XmlPullParserFactory.newInstance()
-            factory.isNamespaceAware=true
+            factory.isNamespaceAware = true
             val xpp = factory.newPullParser()
             xpp.setInput(xmlData.reader())
-            var currentRecord=FeedEntry()
-            while (eventType!=XmlPullParser.END_DOCUMENT){
-                val tagName=xpp.name?.toLowerCase()
-                when(eventType)
+            var currentRecord = FeedEntry()
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                val tagName = xpp.name?.toLowerCase()
+                when (eventType)
 
-                    XmlPullParser.START_TAG ->{
-             //       Log.d(TAG,"parse:Starting tag for" +tagName)
-                    if (tagName=="entry"){
-                        inEntry=true
+                XmlPullParser.START_TAG ->{
+                    //       Log.d(TAG,"parse:Starting tag for" +tagName)
+                    if (tagName == "entry") {
+                        inEntry = true
                     }
                 }
             }
 
-            XmlPullParser.TEXT->textValue=app.text
+            XmlPullParser.TEXT->textValue = app.text
 
             XmlPullParser.END_TAG->{
                 //       Log.d(TAG,"parse:Ending tag for" +tagName)
-                if (inEntry){
-                    when(tagName){
-                        "entry"->{
+                if (inEntry) {
+                    when (tagName) {
+                        "entry" -> {
                             applications.add(currentRecord)
-                            inEntry=false
-                            currentRecord=FeedEntry() //create a new object
+                            inEntry = false
+                            currentRecord = FeedEntry() //create a new object
                         }
                         "name" -> currentRecord.name = textValue
                         "artist" -> currentRecord.artist = textValue
@@ -54,12 +54,13 @@ class ParseApplications {
             }
         }
         //Nothing else to do.
-        eventType= xpp.next()
+        eventType = xpp.next()
+    }
 
-        //            for (app in applications) {
-    //                Log.d(TAG, "****************")
-    //                Log.d(TAG, app.toString())
-//            }
+                //    for (app in applications) {
+                 //  Log.d(TAG, "****************")
+                 //  Log.d(TAG, app.toString())
+          // }
 
     } catch (e: Exception) {
         e.printStackTrace()
